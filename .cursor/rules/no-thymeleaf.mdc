@@ -1,0 +1,24 @@
+---
+description: Prevent new Thymeleaf UI during React migration (not for baseline E2E on Thymeleaf)
+globs:
+alwaysApply: true
+---
+
+# No New Thymeleaf (React migration track)
+
+## When this applies
+
+- On branches `migration/react-grind` or `migration/react-linear`, **or**
+- When creating or editing files under `frontend/`.
+
+## When this does **not** apply
+
+- On branch `e2e-tests` when the work is **only** adding `data-testid` or small template tweaks to support Playwright **against the existing Thymeleaf UI**.
+- Baseline Playwright setup and tests that target Thymeleaf.
+
+## Rules
+
+- Do not create **new** `.html` Thymeleaf pages for user-facing features.
+- Do not add new `th:` attributes as a substitute for building UI in React.
+- New user-facing UI belongs in React under `frontend/`.
+- Backend changes for the SPA should expose JSON (REST), not new server-rendered HTML flows.

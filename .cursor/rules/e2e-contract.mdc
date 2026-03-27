@@ -1,0 +1,19 @@
+---
+description: E2E test contract — React must pass the same Playwright tests as Thymeleaf
+globs:
+alwaysApply: true
+---
+
+# E2E Test Contract
+
+The Playwright tests in `e2e/` are the acceptance criteria for this migration.
+
+- **NEVER** modify E2E test files to make them pass against React. Fix the React code, not the test.
+- Preserve all `data-testid` attributes from Thymeleaf templates in React components.
+- All user-visible text, form labels, and navigation must match the Thymeleaf version.
+- React app must use the same URL paths (e.g., `/owners`, `/owners/new`, `/owners/{id}/edit`).
+
+## Selector rules
+
+- Prefer Playwright accessibility locators: `getByRole`, `getByLabel`, `getByText`, `getByPlaceholder`, and `getByTestId` where contract IDs exist.
+- Do not rely on framework-specific DOM structure that differs between Thymeleaf and React.

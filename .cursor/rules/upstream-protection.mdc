@@ -1,0 +1,38 @@
+---
+description: Fork-only protection — never fetch, push, or PR against spring-projects/spring-petclinic
+globs:
+alwaysApply: true
+---
+
+# Upstream Protection (Fork Only)
+
+This repository is a **fork** of `spring-projects/spring-petclinic`. The upstream project is not ours.
+
+## Git remotes
+
+- Use **only** `origin` pointing at the Chris at Cursor fork: `github.com/chrisatcursor/spring-petclinic` (GitHub treats `ChrisatCursor` and `chrisatcursor` as the same org).
+- **Do not** add an `upstream` remote to `spring-projects/spring-petclinic`.
+- **Do not** `git fetch` or `git pull` from `spring-projects/spring-petclinic` or any URL that is not the fork.
+
+## Pushing code
+
+- **ONLY** push to the fork (`origin`).
+- Before every push, run `git remote -v` and confirm fetch/push URLs are the fork, not `spring-projects/`.
+
+## Pull requests
+
+- **ONLY** open PRs whose **base** repository is `chrisatcursor/spring-petclinic` (or `ChrisatCursor/spring-petclinic`).
+- **NEVER** open a PR against `spring-projects/spring-petclinic`.
+- When using GitHub CLI: `gh pr create --repo chrisatcursor/spring-petclinic`
+
+## Syncing
+
+- To update from GitHub, use `git fetch origin` and merge/rebase from **`origin/main`** (or the appropriate branch on the fork).
+
+## Verification before push or PR
+
+```bash
+git remote -v
+# origin must show: github.com/chrisatcursor/spring-petclinic (or ChrisatCursor)
+# must NOT show spring-projects/spring-petclinic
+```
