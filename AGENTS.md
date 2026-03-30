@@ -34,12 +34,12 @@ Runs `spring-javaformat:validate` and `nohttp-checkstyle`. Both must pass before
 
 The `MySqlIntegrationTests` and `PostgresIntegrationTests` require Docker (Testcontainers). Skip them unless Docker is available.
 
-**Playwright E2E tests:**
+**Playwright E2E tests (29 specs across 7 files):**
 ```bash
 npm run test:e2e
 ```
 
-The `e2e/` directory uses `--pass-with-no-tests` since test files are added incrementally.
+E2E tests require the Spring Boot app to be running on port 8080 first, or Playwright's `webServer` block in `playwright.config.ts` will start it automatically. Tests cover home page, navigation, owner CRUD, owner search, pet management, vets, and visits.
 
 ### Gotchas
 
