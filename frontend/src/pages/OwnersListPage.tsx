@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Pagination } from '../components/Pagination.tsx';
-import { Owner, getOwners } from '../services/petclinicApi.ts';
+import { getOwners } from '../services/petclinicApi.ts';
+import type { Owner } from '../services/petclinicApi.ts';
 
 export function OwnersListPage() {
   const [searchParams] = useSearchParams();
@@ -77,7 +78,7 @@ export function OwnersListPage() {
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
-        path="/owners"
+        pageBasePath="/owners"
         query={{ lastName }}
       />
     </>

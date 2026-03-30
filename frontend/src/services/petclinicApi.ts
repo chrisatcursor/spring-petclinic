@@ -86,6 +86,7 @@ export interface PaginatedVets {
 }
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? '/petclinic/api';
+const API_TIMEOUT_MS = Number(import.meta.env.VITE_API_TIMEOUT_MS ?? 1500);
 const PAGE_SIZE = 5;
 
 let restAvailability: 'unknown' | 'available' | 'unavailable' = 'unknown';
@@ -383,6 +384,9 @@ function parseErrorPayload(payload: unknown): ValidationErrors {
 }
 
 async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+
   const response = await fetch(`${API_BASE}${path}`, {
     headers: {
       Accept: 'application/json',
@@ -390,6 +394,9 @@ async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
       ...init?.headers,
     },
     ...init,
+    signal: controller.signal,
+  }).finally(() => {
+    clearTimeout(timeoutId);
   });
 
   if (!response.ok) {

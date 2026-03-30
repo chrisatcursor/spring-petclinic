@@ -1,14 +1,9 @@
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import type { FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FormField } from '../components/FormField.tsx';
-import {
-  ApiValidationError,
-  Owner,
-  ValidationErrors,
-  VisitPayload,
-  createVisit,
-  getOwner,
-} from '../services/petclinicApi.ts';
+import { ApiValidationError, createVisit, getOwner } from '../services/petclinicApi.ts';
+import type { Owner, ValidationErrors, VisitPayload } from '../services/petclinicApi.ts';
 
 function toDisplayDate(value: string): string {
   return value ? value.split('T')[0] : '';
@@ -22,21 +17,21 @@ const emptyVisit: VisitPayload = {
 export function VisitFormPage() {
   const { ownerId, petId } = useParams();
   const navigate = useNavigate();
+  const ownerIdNumber = Number(ownerId ?? NaN);
+  const hasValidOwnerId = Number.isFinite(ownerIdNumber);
   const [owner, setOwner] = useState<Owner | null>(null);
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [formValues, setFormValues] = useState<VisitPayload>(emptyVisit);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(hasValidOwnerId);
   const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
-    if (!ownerId) {
-      setSubmitError('Owner not found');
-      setLoading(false);
+    if (!hasValidOwnerId) {
       return;
     }
 
     let cancelled = false;
-    getOwner(Number(ownerId))
+    getOwner(ownerIdNumber)
       .then((result) => {
         if (cancelled) {
           return;
@@ -61,7 +56,7 @@ export function VisitFormPage() {
     return () => {
       cancelled = true;
     };
-  }, [ownerId]);
+  }, [hasValidOwnerId, ownerIdNumber]);
 
   const pet = useMemo(() => {
     if (!owner || !petId) {
@@ -72,14 +67,14 @@ export function VisitFormPage() {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!ownerId || !petId) {
+    if (!hasValidOwnerId || !petId) {
       return;
     }
 
     setErrors({});
     setSubmitError('');
     try {
-      const updatedOwner = await createVisit(Number(ownerId), Number(petId), formValues);
+      const updatedOwner = await createVisit(ownerIdNumber, Number(petId), formValues);
       navigate(`/owners/${updatedOwner.id}`, { state: { message: 'Your visit has been booked' } });
     }
     catch (error) {
@@ -90,6 +85,15 @@ export function VisitFormPage() {
         setSubmitError('An unexpected error occurred.');
       }
     }
+  }
+
+  if (!hasValidOwnerId) {
+    return (
+      <>
+        <h2>New Visit</h2>
+        <p>Owner not found</p>
+      </>
+    );
   }
 
   if (loading) {

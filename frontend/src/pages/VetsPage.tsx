@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Pagination } from '../components/Pagination.tsx';
-import { Vet, getVets } from '../services/petclinicApi.ts';
+import { getVets } from '../services/petclinicApi.ts';
+import type { Vet } from '../services/petclinicApi.ts';
 
 export function VetsPage() {
   const [searchParams] = useSearchParams();

@@ -1,18 +1,10 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import type { FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FormField } from '../components/FormField.tsx';
 import { SelectField } from '../components/SelectField.tsx';
-import {
-  ApiValidationError,
-  Owner,
-  PetPayload,
-  PetType,
-  ValidationErrors,
-  createPet,
-  getOwner,
-  getPetTypes,
-  updatePet,
-} from '../services/petclinicApi.ts';
+import { ApiValidationError, createPet, getOwner, getPetTypes, updatePet } from '../services/petclinicApi.ts';
+import type { Owner, PetPayload, PetType, ValidationErrors } from '../services/petclinicApi.ts';
 
 const emptyPet: PetPayload = {
   name: '',
@@ -24,22 +16,21 @@ export function PetFormPage() {
   const { ownerId, petId } = useParams();
   const navigate = useNavigate();
   const isEdit = Boolean(petId);
+  const ownerIdNumber = ownerId ? Number(ownerId) : Number.NaN;
+  const hasValidOwnerId = Number.isFinite(ownerIdNumber);
   const [owner, setOwner] = useState<Owner | null>(null);
   const [types, setTypes] = useState<PetType[]>([]);
   const [formValues, setFormValues] = useState<PetPayload>(emptyPet);
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [submitError, setSubmitError] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(hasValidOwnerId);
 
   useEffect(() => {
-    if (!ownerId) {
-      setSubmitError('Owner not found');
-      setLoading(false);
+    if (!hasValidOwnerId) {
       return;
     }
-
     let cancelled = false;
-    Promise.all([getOwner(Number(ownerId)), getPetTypes()])
+    Promise.all([getOwner(ownerIdNumber), getPetTypes()])
       .then(([loadedOwner, loadedTypes]) => {
         if (cancelled) {
           return;
@@ -80,7 +71,7 @@ export function PetFormPage() {
     return () => {
       cancelled = true;
     };
-  }, [isEdit, ownerId, petId]);
+  }, [hasValidOwnerId, isEdit, ownerIdNumber, petId]);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -107,6 +98,10 @@ export function PetFormPage() {
         setSubmitError('An unexpected error occurred.');
       }
     }
+  }
+
+  if (!hasValidOwnerId) {
+    return <p>Owner not found</p>;
   }
 
   if (loading) {

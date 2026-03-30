@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { FlashMessage } from '../components/FlashMessage.tsx';
-import { Owner, getOwner } from '../services/petclinicApi.ts';
+import { getOwner } from '../services/petclinicApi.ts';
+import type { Owner } from '../services/petclinicApi.ts';
 
 function toDisplayDate(value: string): string {
   return value ? value.split('T')[0] : '';
@@ -24,9 +25,11 @@ function renderPetType(type: unknown): string {
 export function OwnerDetailsPage() {
   const { ownerId } = useParams();
   const location = useLocation();
+  const parsedOwnerId = ownerId ? Number(ownerId) : Number.NaN;
+  const hasValidOwnerId = Number.isFinite(parsedOwnerId);
   const [owner, setOwner] = useState<Owner | null>(null);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(hasValidOwnerId);
 
   const successMessage = useMemo(() => {
     const state = location.state as { message?: string } | null;
@@ -34,15 +37,12 @@ export function OwnerDetailsPage() {
   }, [location.state]);
 
   useEffect(() => {
-    if (!ownerId) {
-      setError('Owner not found');
-      setLoading(false);
+    if (!hasValidOwnerId) {
       return;
     }
 
     let cancelled = false;
-    setLoading(true);
-    getOwner(Number(ownerId))
+    getOwner(parsedOwnerId)
       .then((result) => {
         if (cancelled) {
           return;
@@ -68,7 +68,16 @@ export function OwnerDetailsPage() {
     return () => {
       cancelled = true;
     };
-  }, [ownerId]);
+  }, [hasValidOwnerId, parsedOwnerId]);
+
+  if (!hasValidOwnerId) {
+    return (
+      <>
+        <h2>Owner Information</h2>
+        <p>Owner not found</p>
+      </>
+    );
+  }
 
   if (loading) {
     return <p>Loading...</p>;

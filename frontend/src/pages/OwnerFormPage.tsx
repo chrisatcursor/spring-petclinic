@@ -1,14 +1,9 @@
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import type { FormEvent } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { FormField } from '../components/FormField.tsx';
-import {
-  ApiValidationError,
-  OwnerPayload,
-  ValidationErrors,
-  createOwner,
-  getOwner,
-  updateOwner,
-} from '../services/petclinicApi.ts';
+import { ApiValidationError, createOwner, getOwner, updateOwner } from '../services/petclinicApi.ts';
+import type { OwnerPayload, ValidationErrors } from '../services/petclinicApi.ts';
 
 const emptyOwner: OwnerPayload = {
   firstName: '',
@@ -25,12 +20,13 @@ export function OwnerFormPage() {
   const isEdit = Boolean(ownerId);
   const [formValues, setFormValues] = useState<OwnerPayload>(emptyOwner);
   const [errors, setErrors] = useState<ValidationErrors>({});
-  const [loading, setLoading] = useState(isEdit);
+  const isCreationPath = location.pathname.startsWith('/owners/new');
+  const shouldLoadOwner = isEdit && Boolean(ownerId) && !isCreationPath;
+  const [loading, setLoading] = useState(shouldLoadOwner);
   const [submitError, setSubmitError] = useState('');
 
   useEffect(() => {
-    if (!isEdit || !ownerId || location.pathname.startsWith('/owners/new')) {
-      setLoading(false);
+    if (!shouldLoadOwner || !ownerId) {
       return;
     }
     let cancelled = false;
@@ -65,15 +61,7 @@ export function OwnerFormPage() {
     return () => {
       cancelled = true;
     };
-  }, [isEdit, location.pathname, ownerId]);
-
-  useEffect(() => {
-    if (location.pathname.startsWith('/owners/new')) {
-      setFormValues(emptyOwner);
-      setErrors({});
-      setSubmitError('');
-    }
-  }, [location.pathname]);
+  }, [ownerId, shouldLoadOwner]);
 
   const hasFieldErrors = useMemo(() => Object.keys(errors).length > 0, [errors]);
 
