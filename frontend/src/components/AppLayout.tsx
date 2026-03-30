@@ -56,11 +56,11 @@ export function AppLayout() {
   const activeMenu = menuForPath(location.pathname);
 
   return (
-    <>
+    <div className="app-shell">
       <nav className="navbar navbar-expand-lg navbar-dark" role="navigation">
         <div className="container-fluid">
-          <Link className="navbar-brand" to="/">
-            <span />
+          <Link className="navbar-brand" to="/" aria-label="PetClinic home">
+            PetClinic
           </Link>
           <button
             className="navbar-toggler"
@@ -92,25 +92,18 @@ export function AppLayout() {
       </nav>
 
       <div className="container-fluid">
-        <div className="container xd-container">
+        <div className="container xd-container app-content">
           <Outlet />
-
-          <br />
-          <br />
-          <div className="container">
-            <div className="row">
-              <div className="col-12 text-center">
-                <img
-                  src="/resources/images/spring-logo.svg"
-                  alt="VMware Tanzu Logo"
-                  className="logo"
-                  style={appStyles.logo}
-                />
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-    </>
+      <footer className="app-footer">
+        <img
+          src="/resources/images/spring-logo.svg"
+          alt="VMware Tanzu Logo"
+          className="logo"
+          style={appStyles.logo}
+        />
+      </footer>
+    </div>
   );
 }
