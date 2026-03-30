@@ -605,6 +605,17 @@ function requiredPetErrors(
   return errors;
 }
 
+function petPayloadForRest(payload: PetPayload, availableTypes: PetType[]) {
+  const selectedType = availableTypes.find((entry) => entry.id === payload.typeId);
+  return {
+    name: payload.name.trim(),
+    birthDate: payload.birthDate,
+    type: selectedType
+      ? { id: selectedType.id, name: selectedType.name }
+      : { id: payload.typeId, name: '' },
+  };
+}
+
 function requiredVisitErrors(payload: VisitPayload): ValidationErrors {
   const errors: ValidationErrors = {};
   if (!payload.date.trim()) {
@@ -779,12 +790,10 @@ export async function createPet(ownerId: number, payload: PetPayload): Promise<O
 
   return withFallback(
     async () => {
+      const restPayload = petPayloadForRest(payload, petTypes);
       const createdPet = await requestJson<unknown>(`/owners/${ownerId}/pets`, {
         method: 'POST',
-        body: JSON.stringify({
-          ...payload,
-          type: { id: payload.typeId },
-        }),
+        body: JSON.stringify(restPayload),
       });
       if (createdPet) {
         const created = mapPet(createdPet);
@@ -840,13 +849,10 @@ export async function updatePet(ownerId: number, petId: number, payload: PetPayl
 
   return withFallback(
     async () => {
+      const restPayload = petPayloadForRest(payload, petTypes);
       const updatedRemotePet = await requestJson<unknown>(`/owners/${ownerId}/pets/${petId}`, {
         method: 'PUT',
-        body: JSON.stringify({
-          ...payload,
-          id: petId,
-          type: { id: payload.typeId },
-        }),
+        body: JSON.stringify(restPayload),
       });
       if (updatedRemotePet) {
         const updatedPet = mapPet(updatedRemotePet);

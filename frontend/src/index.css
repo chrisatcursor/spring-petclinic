@@ -1,0 +1,26 @@
+@import url('/resources/css/petclinic.css');
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content {
+  flex: 1;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 1rem 0 2rem;
+}
