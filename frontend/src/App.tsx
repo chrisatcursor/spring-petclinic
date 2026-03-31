@@ -101,9 +101,23 @@ async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
     ...init,
     headers,
   });
+  if (response.status === 204 || response.status === 205) {
+    return undefined as T;
+  }
+
   const contentType = response.headers.get('content-type') ?? '';
+  const rawBody = await response.text();
+  const hasBody = rawBody.trim().length > 0;
   const hasJson = contentType.includes('application/json');
-  const payload = hasJson ? await response.json() : await response.text();
+
+  let payload: unknown;
+  if (!hasBody) {
+    payload = undefined;
+  } else if (hasJson) {
+    payload = JSON.parse(rawBody);
+  } else {
+    payload = rawBody;
+  }
 
   if (!response.ok) {
     throw new ApiError(response.status, payload);
@@ -789,8 +803,6 @@ function OwnerFormPage() {
     }
     if (!values.telephone.trim()) {
       errors.telephone = 'is required';
-    } else if (!/^\d+$/.test(values.telephone.trim())) {
-      errors.telephone = 'must be all numeric';
     } else if (!/^\d{10}$/.test(values.telephone.trim())) {
       errors.telephone = 'must be a 10-digit number';
     }
