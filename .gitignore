@@ -52,3 +52,5 @@ test-results/
 _site/
 *.css
 !petclinic.css
+!frontend/src/index.css
+!frontend/public/resources/css/petclinic.css
