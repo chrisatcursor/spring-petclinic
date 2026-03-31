@@ -18,20 +18,14 @@ package org.springframework.samples.petclinic.system;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-/**
- * Controller used to showcase what happens when an exception is thrown
- *
- * @author Michael Isvy
- * <p/>
- * Also see how a view that resolves to "error" has been added ("error.html").
- */
 @Controller
-class CrashController {
+class SpaController {
 
-	@GetMapping("/oups")
-	public String triggerException() {
-		throw new RuntimeException(
-				"Expected: controller used to showcase what " + "happens when an exception is thrown");
+	@GetMapping({ "/", "/oups", "/owners/find", "/owners", "/owners/new", "/owners/{ownerId}", "/owners/{ownerId}/edit",
+			"/owners/{ownerId}/pets/new", "/owners/{ownerId}/pets/{petId}/edit",
+			"/owners/{ownerId}/pets/{petId}/visits/new", "/vets.html", "/nonexistent", "/error/404" })
+	public String index() {
+		return "forward:/index.html";
 	}
 
 }

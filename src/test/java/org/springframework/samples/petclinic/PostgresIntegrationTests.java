@@ -85,10 +85,11 @@ public class PostgresIntegrationTests {
 	}
 
 	@Test
-	void ownerDetails() {
+	void spaHome() {
 		RestTemplate template = builder.rootUri("http://localhost:" + port).build();
-		ResponseEntity<String> result = template.exchange(RequestEntity.get("/owners/1").build(), String.class);
+		ResponseEntity<String> result = template.exchange(RequestEntity.get("/").build(), String.class);
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).contains("PetClinic :: a Spring Framework demonstration");
 	}
 
 	static class PropertiesLogger implements ApplicationListener<ApplicationPreparedEvent> {

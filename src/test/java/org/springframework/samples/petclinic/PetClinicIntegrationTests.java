@@ -63,6 +63,14 @@ public class PetClinicIntegrationTests {
 		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
+	@Test
+	void spaIndexAtRoot() {
+		RestTemplate template = builder.rootUri("http://localhost:" + port).build();
+		ResponseEntity<String> result = template.exchange(RequestEntity.get("/").build(), String.class);
+		assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(result.getBody()).contains("PetClinic :: a Spring Framework demonstration");
+	}
+
 	public static void main(String[] args) {
 		SpringApplication.run(PetClinicApplication.class, "--spring.docker.compose.lifecycle-management=NONE");
 	}
