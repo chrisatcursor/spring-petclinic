@@ -86,7 +86,7 @@ export interface PaginatedVets {
 }
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? '/petclinic/api';
-const API_TIMEOUT_MS = Number(import.meta.env.VITE_API_TIMEOUT_MS ?? 1500);
+const API_TIMEOUT_MS = Number(import.meta.env.VITE_API_TIMEOUT_MS ?? 5000);
 const PAGE_SIZE = 5;
 
 let restAvailability: 'unknown' | 'available' | 'unavailable' = 'unknown';

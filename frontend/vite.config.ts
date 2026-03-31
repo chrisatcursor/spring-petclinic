@@ -6,8 +6,12 @@ export default defineConfig({
   server: {
     port: 4173,
     proxy: {
-      '/api': {
-        target: 'http://localhost:9966/petclinic',
+      '/petclinic': {
+        target: 'http://localhost:9966',
+        changeOrigin: true,
+      },
+      '/resources': {
+        target: 'http://localhost:8080',
         changeOrigin: true,
       },
     },
