@@ -51,3 +51,8 @@ INSERT INTO visits VALUES (default, 7, '2013-01-01', 'rabies shot');
 INSERT INTO visits VALUES (default, 8, '2013-01-02', 'rabies shot');
 INSERT INTO visits VALUES (default, 8, '2013-01-03', 'neutered');
 INSERT INTO visits VALUES (default, 7, '2013-01-04', 'spayed');
+
+INSERT INTO call_notes VALUES (default, 1, '2024-01-15 10:30:00', 'Called to discuss Leo''s upcoming vaccination schedule. Owner confirmed availability for next week.', 'Appointment scheduling', 'Dr. Carter');
+INSERT INTO call_notes VALUES (default, 1, '2024-02-20 14:15:00', 'Follow-up call regarding Leo''s diet change. Owner reports improvement in energy levels.', 'Follow-up', 'Helen');
+INSERT INTO call_notes VALUES (default, 6, '2024-03-10 09:00:00', 'Reminder call for Samantha and Max annual checkups. Scheduled for March 15th at 2pm.', 'Appointment reminder', 'Linda');
+INSERT INTO call_notes VALUES (default, 3, '2024-03-12 11:45:00', 'Owner called with concerns about Rosy''s eating habits. Advised monitoring for 48 hours and call back if no improvement.', 'Health concern', 'Dr. Carter');

@@ -51,3 +51,8 @@ INSERT IGNORE INTO visits VALUES (1, 7, '2010-03-04', 'rabies shot');
 INSERT IGNORE INTO visits VALUES (2, 8, '2011-03-04', 'rabies shot');
 INSERT IGNORE INTO visits VALUES (3, 8, '2009-06-04', 'neutered');
 INSERT IGNORE INTO visits VALUES (4, 7, '2008-09-04', 'spayed');
+
+INSERT IGNORE INTO call_notes VALUES (1, 1, '2024-01-15 10:30:00', 'Called to discuss Leo''s upcoming vaccination schedule. Owner confirmed availability for next week.', 'Appointment scheduling', 'Dr. Carter');
+INSERT IGNORE INTO call_notes VALUES (2, 1, '2024-02-20 14:15:00', 'Follow-up call regarding Leo''s diet change. Owner reports improvement in energy levels.', 'Follow-up', 'Helen');
+INSERT IGNORE INTO call_notes VALUES (3, 6, '2024-03-10 09:00:00', 'Reminder call for Samantha and Max annual checkups. Scheduled for March 15th at 2pm.', 'Appointment reminder', 'Linda');
+INSERT IGNORE INTO call_notes VALUES (4, 3, '2024-03-12 11:45:00', 'Owner called with concerns about Rosy''s eating habits. Advised monitoring for 48 hours and call back if no improvement.', 'Health concern', 'Dr. Carter');

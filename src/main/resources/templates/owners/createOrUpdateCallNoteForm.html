@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org"
+  th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+
+<body>
+
+  <h2>
+    <th:block th:if="${callNote['new']}" th:text="#{newCallNote}">New Call Note</th:block>
+    <th:block th:unless="${callNote['new']}" th:text="#{callNote}">Call Note</th:block>
+  </h2>
+
+  <form th:object="${callNote}" class="form-horizontal" method="post" data-testid="call-note-form">
+
+    <div class="form-group has-feedback">
+      <input type="hidden" th:field="*{callTimestamp}" />
+
+      <div th:replace="~{fragments/inputField :: input ('Staff Name', 'staffName', 'text')}" />
+      <div th:replace="~{fragments/inputField :: input ('Call Reason', 'callReason', 'text')}" />
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label" th:text="#{noteContent}">Note Content</label>
+        <div class="col-sm-10">
+          <textarea class="form-control" th:field="*{noteContent}" rows="5" data-testid="note-content"></textarea>
+          <span class="help-inline" th:if="${#fields.hasErrors('noteContent')}">
+            <span th:errors="*{noteContent}"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button class="btn btn-primary" type="submit" th:text="#{addCallNote}" data-testid="submit-call-note">Add Call
+          Note</button>
+      </div>
+    </div>
+
+  </form>
+
+  <br />
+  <b th:text="#{ownerInformation}">Owner Information</b>
+  <table class="table table-striped" th:object="${owner}" data-testid="owner-information">
+    <tr>
+      <th th:text="#{name}">Name</th>
+      <td><b th:text="*{firstName + ' ' + lastName}"></b></td>
+    </tr>
+    <tr>
+      <th th:text="#{telephone}">Telephone</th>
+      <td th:text="*{telephone}"></td>
+    </tr>
+  </table>
+
+</body>
+
+</html>
