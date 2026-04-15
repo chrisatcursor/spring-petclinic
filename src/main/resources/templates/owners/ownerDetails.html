@@ -37,6 +37,8 @@
     Owner</a>
   <a th:href="@{__${owner.id}__/pets/new}" class="btn btn-primary" th:text="#{addNewPet}" data-testid="add-pet-link">Add
     New Pet</a>
+  <a th:href="@{__${owner.id}__/callnotes/new}" class="btn btn-primary" th:text="#{addCallNote}" data-testid="add-call-note-link">Add
+    Call Note</a>
 
   <br />
   <br />
@@ -77,6 +79,31 @@
     </tr>
 
   </table>
+
+  <br />
+  <br />
+  <h2 th:text="#{callNotes}">Call Notes</h2>
+
+  <table class="table table-striped" data-testid="call-notes-table" th:if="${not #lists.isEmpty(owner.callNotes)}">
+    <thead>
+      <tr>
+        <th th:text="#{dateTime}">Date/Time</th>
+        <th th:text="#{callReason}">Reason</th>
+        <th th:text="#{staffName}">Staff</th>
+        <th th:text="#{noteContent}">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="callNote : ${owner.callNotes}">
+        <td th:text="${#temporals.format(callNote.callTimestamp, 'yyyy-MM-dd HH:mm')}"></td>
+        <td th:text="${callNote.callReason}"></td>
+        <td th:text="${callNote.staffName}"></td>
+        <td th:text="${callNote.noteContent}"></td>
+      </tr>
+    </tbody>
+  </table>
+  <p th:if="${#lists.isEmpty(owner.callNotes)}" th:text="#{noCallNotes}" data-testid="no-call-notes">No call notes recorded yet.</p>
+
   <script>
     // Function to hide the success and error messages after 3 seconds
     function hideMessages() {

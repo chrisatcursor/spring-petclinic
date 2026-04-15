@@ -51,3 +51,8 @@ INSERT INTO visits (pet_id, visit_date, description) SELECT 7, '2010-03-04', 'ra
 INSERT INTO visits (pet_id, visit_date, description) SELECT 8, '2011-03-04', 'rabies shot' WHERE NOT EXISTS (SELECT * FROM visits WHERE id=2);
 INSERT INTO visits (pet_id, visit_date, description) SELECT 8, '2009-06-04', 'neutered' WHERE NOT EXISTS (SELECT * FROM visits WHERE id=3);
 INSERT INTO visits (pet_id, visit_date, description) SELECT 7, '2008-09-04', 'spayed' WHERE NOT EXISTS (SELECT * FROM visits WHERE id=4);
+
+INSERT INTO call_notes (owner_id, call_timestamp, note_content, call_reason, staff_name) SELECT 1, '2024-01-15 10:30:00', 'Called to discuss Leo''s upcoming vaccination schedule. Owner confirmed availability for next week.', 'Appointment scheduling', 'Dr. Carter' WHERE NOT EXISTS (SELECT * FROM call_notes WHERE id=1);
+INSERT INTO call_notes (owner_id, call_timestamp, note_content, call_reason, staff_name) SELECT 1, '2024-02-20 14:15:00', 'Follow-up call regarding Leo''s diet change. Owner reports improvement in energy levels.', 'Follow-up', 'Helen' WHERE NOT EXISTS (SELECT * FROM call_notes WHERE id=2);
+INSERT INTO call_notes (owner_id, call_timestamp, note_content, call_reason, staff_name) SELECT 6, '2024-03-10 09:00:00', 'Reminder call for Samantha and Max annual checkups. Scheduled for March 15th at 2pm.', 'Appointment reminder', 'Linda' WHERE NOT EXISTS (SELECT * FROM call_notes WHERE id=3);
+INSERT INTO call_notes (owner_id, call_timestamp, note_content, call_reason, staff_name) SELECT 3, '2024-03-12 11:45:00', 'Owner called with concerns about Rosy''s eating habits. Advised monitoring for 48 hours and call back if no improvement.', 'Health concern', 'Dr. Carter' WHERE NOT EXISTS (SELECT * FROM call_notes WHERE id=4);

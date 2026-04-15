@@ -66,6 +66,11 @@ public class Owner extends Person {
 	@OrderBy("name")
 	private final List<Pet> pets = new ArrayList<>();
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "owner_id")
+	@OrderBy("callTimestamp DESC")
+	private final List<CallNote> callNotes = new ArrayList<>();
+
 	public String getAddress() {
 		return this.address;
 	}
@@ -92,6 +97,14 @@ public class Owner extends Person {
 
 	public List<Pet> getPets() {
 		return this.pets;
+	}
+
+	public List<CallNote> getCallNotes() {
+		return this.callNotes;
+	}
+
+	public void addCallNote(CallNote callNote) {
+		getCallNotes().add(callNote);
 	}
 
 	public void addPet(Pet pet) {
