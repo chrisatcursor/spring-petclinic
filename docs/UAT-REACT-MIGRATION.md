@@ -72,6 +72,8 @@ results when it succeeds.
 | Manual UAT harness (`node scripts/uat-manual-walkthrough.mjs`) | ✅ all 22 IDs PASS — see `/opt/cursor/artifacts/uat-manual-output.txt` |
 | Frontend production build (`npm run build --prefix frontend`) | ✅ — see `/opt/cursor/artifacts/frontend-build.txt` |
 | Visual evidence (`node scripts/uat-screenshots.mjs`) | ✅ 13 screenshots — see `/opt/cursor/artifacts/uat-screenshots/` |
+| Manual click-through recording | ✅ `/opt/cursor/artifacts/petclinic-react-spa-walkthrough.mp4` (≈15 min, 18 MB) |
+| Production build artifact | ✅ `/opt/cursor/artifacts/petclinic-frontend-dist.tar.gz` (419 KB) |
 
 The REST backend stores everything in an in-memory H2 database that resets on
 JVM restart. Re-run `./mvnw spring-boot:run` against the `spring-petclinic-rest`
