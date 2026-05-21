@@ -150,8 +150,10 @@ try {
 
   // UAT-15
   await page.goto(`${BASE_URL}/owners/1`);
+  const existingPetName =
+    (await page.getByTestId('pets-and-visits').locator('dl dd').first().textContent())?.trim() ?? 'Leo';
   await page.getByTestId('add-pet-link').click();
-  await page.getByLabel('Name').fill('Leo');
+  await page.getByLabel('Name').fill(existingPetName);
   await page.getByLabel('Birth Date').fill('2020-01-01');
   await page.getByLabel('Type').selectOption('cat');
   await page.getByRole('button', { name: 'Add Pet' }).click();
@@ -178,7 +180,7 @@ try {
   );
   await page.getByText('Pet details has been edited').waitFor();
   await page.getByRole('link', { name: 'Edit Pet' }).first().click();
-  await page.getByLabel('Name').fill('Leo');
+  await page.getByLabel('Name').fill(existingPetName);
   await page.getByRole('button', { name: 'Update Pet' }).click();
   await page.waitForURL(
     (url) => pathWithoutSession(url) === '/owners/1' && !url.pathname.includes('/pets'),

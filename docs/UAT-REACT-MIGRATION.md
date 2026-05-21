@@ -57,12 +57,21 @@ execution record below.
 
 ## Execution record
 
-Fill this section during final validation.
+**Date:** 2026-05-21  
+**Tester:** Cloud Agent with browser-based manual walkthrough  
+**REST backend:** `spring-petclinic-rest` running on port 9966  
+**SPA target:** Spring Boot serving built React assets on port 8080
 
 | Check | Result |
 |-------|--------|
-| Frontend lint | Pending |
-| Frontend production build | Pending |
-| Spring Boot tests | Pending |
-| Playwright full suite | Pending |
-| Manual walkthrough recording | Pending |
+| Frontend lint | PASS — `npm run lint --prefix frontend` |
+| Frontend production build | PASS — `npm run build --prefix frontend` |
+| Spring Boot Maven tests | PASS — `./mvnw test` |
+| Spring Boot Gradle tests | PASS — `./gradlew test` |
+| Playwright full suite | PASS — `npx playwright test` → 29 passed |
+| Manual walkthrough recording | PASS — `/opt/cursor/artifacts/react-spa-uat-walkthrough.mp4` |
+
+Manual UAT covered every matrix row above: navigation, owner search, owner
+create/edit and validation, pet duplicate/future-date validation, pet create
+and edit, visit creation, vets pagination, `/oups`, `/nonexistent`, and browser
+back/forward behavior.
