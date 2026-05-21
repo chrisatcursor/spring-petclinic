@@ -1,4 +1,41 @@
-# React + TypeScript + Vite
+# PetClinic React SPA
+
+Vite + React + TypeScript frontend for Spring PetClinic. Replaces the former Thymeleaf UI while preserving URL paths, copy, form behavior, and `data-testid` values required by `e2e/` Playwright tests.
+
+## Development
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:4173](http://localhost:4173). API calls go to `/petclinic/api`, proxied to `spring-petclinic-rest` on port **9966** when that service is running. If the REST app is down, the SPA falls back to seeded in-memory data (same demo dataset as the original app).
+
+Optional env (see `.env.example`):
+
+```bash
+VITE_API_BASE_URL=http://localhost:9966/petclinic/api
+```
+
+## Production build
+
+```bash
+npm run build
+```
+
+Maven copies `frontend/dist` into `src/main/resources/static` when you run `./mvnw spring-boot:run` or `./mvnw package`.
+
+## E2E
+
+From the repository root (with this dev server or Playwright `webServer`):
+
+```bash
+npx playwright test
+```
+
+---
+
+## Vite template notes
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
