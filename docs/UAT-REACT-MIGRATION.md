@@ -68,6 +68,13 @@ results when it succeeds.
 
 | Check | Result |
 | ----- | ------ |
-| Playwright full suite (`npx playwright test`) | ✅ 29/29 passing — see `/opt/cursor/artifacts/playwright-react-baseline.txt` |
+| Playwright full suite (`npx playwright test`) | ✅ 29/29 passing — see `/opt/cursor/artifacts/playwright-final.txt` |
 | Manual UAT harness (`node scripts/uat-manual-walkthrough.mjs`) | ✅ all 22 IDs PASS — see `/opt/cursor/artifacts/uat-manual-output.txt` |
 | Frontend production build (`npm run build --prefix frontend`) | ✅ — see `/opt/cursor/artifacts/frontend-build.txt` |
+| Visual evidence (`node scripts/uat-screenshots.mjs`) | ✅ 13 screenshots — see `/opt/cursor/artifacts/uat-screenshots/` |
+
+The REST backend stores everything in an in-memory H2 database that resets on
+JVM restart. Re-run `./mvnw spring-boot:run` against the `spring-petclinic-rest`
+checkout before each test sweep that needs to start from clean reference data
+(otherwise the `edits an existing owner` / `edits a pet` Playwright cases
+mutate the records that subsequent runs rely on).

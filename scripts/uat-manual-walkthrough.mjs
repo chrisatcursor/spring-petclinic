@@ -58,6 +58,11 @@ try {
   await page.getByRole('button', { name: 'Find Owner' }).click();
   await page.waitForURL(/\/owners/);
   await page.getByTestId('owners-table').waitFor();
+  await page.waitForFunction(
+    () => document.querySelectorAll('[data-testid="owner-row"]').length === 5,
+    null,
+    { timeout: 5000 },
+  );
   const rowCount5 = await page.getByTestId('owner-row').count();
   record('UAT-05', rowCount5 === 5, `rows=${rowCount5}`);
 
@@ -67,6 +72,11 @@ try {
   await page.getByRole('button', { name: 'Find Owner' }).click();
   await page.waitForURL(/\/owners/);
   await page.getByTestId('owners-table').waitFor();
+  await page.waitForFunction(
+    () => document.querySelectorAll('[data-testid="owner-row"]').length === 2,
+    null,
+    { timeout: 5000 },
+  );
   const rowCount2 = await page.getByTestId('owner-row').count();
   record('UAT-06', rowCount2 === 2, `rows=${rowCount2}`);
 
@@ -206,6 +216,11 @@ try {
   // UAT-20
   await page.goto(`${BASE_URL}/vets.html`);
   await page.getByRole('heading', { name: 'Veterinarians' }).waitFor();
+  await page.waitForFunction(
+    () => document.querySelectorAll('[data-testid="vet-row"]').length === 5,
+    null,
+    { timeout: 5000 },
+  );
   const vetRows = await page.getByTestId('vet-row').count();
   record('UAT-20', vetRows === 5, `vets=${vetRows}`);
 
