@@ -1,13 +1,15 @@
 # User Acceptance Testing — Thymeleaf to React SPA Migration
 
 **Branch:** `migration/react-grind`  
-**Application under test:** Vite React SPA (`frontend/`) on `http://localhost:4173`  
-**API backend (optional):** `spring-petclinic-rest` at `http://localhost:9966/petclinic/api`  
-**Automated acceptance:** Playwright suite in `e2e/` (29 tests)
+**Application under test:** Spring Boot serving the React SPA on `http://localhost:8080`  
+**API backend:** `spring-petclinic-rest` at `http://localhost:9966/petclinic/api`  
+**Automated acceptance:** Playwright suite in `e2e/`
 
 ## Objectives
 
-Confirm the React SPA preserves Thymeleaf behavior for all user-facing flows: URLs, visible copy, form validation, flash messages, `data-testid` hooks, and navigation.
+Confirm the React SPA preserves Thymeleaf behavior for all user-facing flows:
+URLs, visible copy, form validation, flash messages, `data-testid` hooks,
+navigation, and persisted domain operations through the REST API backend.
 
 ## Preconditions
 
@@ -15,11 +17,11 @@ Confirm the React SPA preserves Thymeleaf behavior for all user-facing flows: UR
 |-------------|-----------------|
 | Node 18+ | `node -v` |
 | Frontend deps | `npm ci --prefix frontend` |
-| Dev server | `npm run dev --prefix frontend` → `http://localhost:4173` |
-| REST API (recommended) | Start `spring-petclinic-rest` on port 9966; without it the SPA uses seeded in-memory fallback data |
-| E2E (automated gate) | `npx playwright test` from repo root |
+| REST API | Start `spring-petclinic-rest` on port 9966 and confirm `/petclinic/api/owners` responds |
+| Spring Boot SPA | `./mvnw spring-boot:run` → `http://localhost:8080` |
+| Automated gate | `npx playwright test` from repo root |
 
-## Test matrix
+## Manual walkthrough matrix
 
 | ID | Area | Steps | Expected result |
 |----|------|-------|-----------------|
@@ -46,42 +48,21 @@ Confirm the React SPA preserves Thymeleaf behavior for all user-facing flows: UR
 | UAT-21 | Vets pagination | Click page “2” | URL `page=2`; 1 vet row |
 | UAT-22 | Browser history | Nav to owners → Back → Forward | History matches Thymeleaf behavior |
 
+## Recording requirements
+
+The final acceptance pass records the manual walkthrough against
+`http://localhost:8080` with `spring-petclinic-rest` running. Store the
+recording as an artifact with a unique filename and record the filename in the
+execution record below.
+
 ## Execution record
 
-**Date:** 2026-05-21  
-**Tester:** Cloud Agent (automated manual harness + Playwright)  
-**Environment:** Linux; REST API on 9966 **not running** (SPA used in-memory fallback after proxy failure)
+Fill this section during final validation.
 
-### Automated acceptance (Playwright)
-
-```
-npx playwright test
-29 passed (4.8s)
-```
-
-All E2E specs cover UAT-01 through UAT-21 behaviorally.
-
-### Manual walkthrough (Playwright harness)
-
-Script: `scripts/uat-manual-walkthrough.mjs`  
-Result: **PASS** — all 22 UAT IDs exercised without assertion failures.
-
-| ID | Result | Notes |
-|----|--------|-------|
-| UAT-01 | PASS | Welcome + pets.png |
-| UAT-02 | PASS | All nav targets |
-| UAT-03 | PASS | /oups error heading |
-| UAT-04 | PASS | 404 copy |
-| UAT-05–08 | PASS | Search flows |
-| UAT-09 | PASS | Owner 1 detail |
-| UAT-10–13 | PASS | Create/edit/validation |
-| UAT-14–17 | PASS | Pet CRUD + errors |
-| UAT-18–19 | PASS | Visit booking |
-| UAT-20–21 | PASS | Vets + pagination |
-| UAT-22 | PASS | back/forward URLs |
-
-### Sign-off
-
-- **Automated E2E:** PASS (29/29)  
-- **Manual UAT matrix:** PASS (22/22)  
-- **Recommendation:** Approve merge to `main` after optional verification with `spring-petclinic-rest` running on 9966.
+| Check | Result |
+|-------|--------|
+| Frontend lint | Pending |
+| Frontend production build | Pending |
+| Spring Boot tests | Pending |
+| Playwright full suite | Pending |
+| Manual walkthrough recording | Pending |

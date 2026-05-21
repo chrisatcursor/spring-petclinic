@@ -1,11 +1,13 @@
 /**
  * Manual UAT harness — exercises docs/UAT-REACT-MIGRATION.md matrix.
  * Run: node scripts/uat-manual-walkthrough.mjs
- * Requires dev server at http://localhost:4173 (or set BASE_URL).
+ * Requires Spring Boot SPA at http://localhost:8080 (or set BASE_URL) and
+ * spring-petclinic-rest at http://localhost:9966.
  */
 import { chromium } from '@playwright/test';
 
-const BASE_URL = process.env.BASE_URL ?? 'http://localhost:4173';
+const BASE_URL = process.env.BASE_URL ?? 'http://localhost:8080';
+const RUN_ID = Date.now().toString().slice(-6);
 
 function pathWithoutSession(url) {
   return url.pathname.split(';')[0].replace(/\/$/, '') || '/';
@@ -136,9 +138,10 @@ try {
   record('UAT-13', true);
 
   // UAT-14
+  const uatPetName = `UatPet${RUN_ID}`;
   await page.goto(`${BASE_URL}/owners/1`);
   await page.getByTestId('add-pet-link').click();
-  await page.getByLabel('Name').fill('UatPet');
+  await page.getByLabel('Name').fill(uatPetName);
   await page.getByLabel('Birth Date').fill('2020-05-15');
   await page.getByLabel('Type').selectOption('dog');
   await page.getByRole('button', { name: 'Add Pet' }).click();
@@ -165,22 +168,28 @@ try {
   await page.getByText('invalid date').waitFor();
   record('UAT-16', true);
 
-  // UAT-17 — restore Leo name for demo data consistency
+  // UAT-17 — edit first pet, then restore Leo for demo data consistency
   await page.goto(`${BASE_URL}/owners/1`);
+  await page.getByRole('link', { name: 'Edit Pet' }).first().click();
+  await page.getByLabel('Name').fill(`LeoUat${RUN_ID}`);
+  await page.getByRole('button', { name: 'Update Pet' }).click();
+  await page.waitForURL(
+    (url) => pathWithoutSession(url) === '/owners/1' && !url.pathname.includes('/pets'),
+  );
+  await page.getByText('Pet details has been edited').waitFor();
   await page.getByRole('link', { name: 'Edit Pet' }).first().click();
   await page.getByLabel('Name').fill('Leo');
   await page.getByRole('button', { name: 'Update Pet' }).click();
   await page.waitForURL(
     (url) => pathWithoutSession(url) === '/owners/1' && !url.pathname.includes('/pets'),
   );
-  await page.getByText('Pet details has been edited').waitFor();
   record('UAT-17', true);
 
   // UAT-18
   await page.goto(`${BASE_URL}/owners/6`);
   await page.locator('tr').filter({ hasText: 'Samantha' }).getByRole('link', { name: 'Add Visit' }).click();
   await page.getByLabel('Date').fill('2024-03-15');
-  await page.getByLabel('Description').fill('uat visit');
+  await page.getByLabel('Description').fill(`uat visit ${RUN_ID}`);
   await page.getByRole('button', { name: 'Add Visit' }).click();
   await page.getByText('Your visit has been booked').waitFor();
   record('UAT-18', true);
@@ -189,9 +198,9 @@ try {
   await page.goto(`${BASE_URL}/owners/6`);
   await page.getByRole('link', { name: 'Add Visit' }).first().click();
   await page.getByLabel('Date').fill('2024-06-20');
-  await page.getByLabel('Description').fill('uat dental');
+  await page.getByLabel('Description').fill(`uat dental ${RUN_ID}`);
   await page.getByRole('button', { name: 'Add Visit' }).click();
-  await page.getByText('uat dental').waitFor();
+  await page.getByText(`uat dental ${RUN_ID}`).waitFor();
   record('UAT-19', true);
 
   // UAT-20

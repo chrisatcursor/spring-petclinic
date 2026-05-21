@@ -39,15 +39,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 /**
- * Integration tests for the SPA error route.
- *
- * @author Alex Lutz
+ * Integration tests for SPA route forwarding.
  */
-// NOT Waiting https://github.com/spring-projects/spring-boot/issues/5574
 @SpringBootTest(webEnvironment = RANDOM_PORT,
 		properties = { "spring.web.error.include-message=ALWAYS", "management.endpoints.access.default=none" })
 @AutoConfigureTestRestTemplate
-class CrashControllerIntegrationTests {
+class SpaControllerIntegrationTests {
 
 	@Value("${local.server.port}")
 	private int port;
@@ -56,7 +53,7 @@ class CrashControllerIntegrationTests {
 	private TestRestTemplate rest;
 
 	@Test
-	void triggerExceptionHtml() {
+	void forwardsErrorRouteToSpaIndex() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setAccept(List.of(MediaType.TEXT_HTML));
 		ResponseEntity<String> resp = rest.exchange("http://localhost:" + port + "/oups", HttpMethod.GET,

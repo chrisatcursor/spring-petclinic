@@ -4,16 +4,17 @@ export default defineConfig({
   testDir: './e2e',
   timeout: 30000,
   retries: 0,
+  workers: 1,
   use: {
-    baseURL: 'http://localhost:4173',
+    baseURL: 'http://localhost:8080',
     headless: true,
     screenshot: 'only-on-failure',
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'npm run dev --prefix frontend',
-    url: 'http://localhost:4173',
+    command: './mvnw spring-boot:run',
+    url: 'http://localhost:8080',
     reuseExistingServer: true,
-    timeout: 120000,
+    timeout: 180000,
   },
 });

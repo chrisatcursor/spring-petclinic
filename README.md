@@ -91,9 +91,27 @@ docker compose up postgres
 
 At development time we recommend you use the test applications set up as `main()` methods in `PetClinicIntegrationTests` (using the default H2 database and also adding Spring Boot Devtools), `MySqlTestApplication` and `PostgresIntegrationTests`. These are set up so that you can run the apps in your IDE to get fast feedback and also run the same classes as integration tests against the respective database. The MySql integration tests use Testcontainers to start the database in a Docker container, and the Postgres tests use Docker Compose to do the same thing.
 
-## Compiling the CSS
+## React frontend
 
-There is a `petclinic.css` in `src/main/resources/static/resources/css`. It was generated from the `petclinic.scss` source, combined with the [Bootstrap](https://getbootstrap.com/) library. If you make changes to the `scss`, or upgrade Bootstrap, you will need to re-compile the CSS resources using the Maven profile "css", i.e. `./mvnw package -P css`. There is no build profile for Gradle to compile the CSS.
+The browser UI is a Vite + React + TypeScript SPA in `frontend/`. It consumes
+the separate Spring PetClinic REST API at `http://localhost:9966/petclinic/api`
+and is bundled into the Spring Boot app as static resources during the Maven or
+Gradle build.
+
+For local frontend-only development:
+
+```bash
+npm ci --prefix frontend
+npm run dev --prefix frontend
+```
+
+For the full application:
+
+```bash
+./mvnw spring-boot:run
+```
+
+Then visit [http://localhost:8080](http://localhost:8080).
 
 ## Working with Petclinic in your IDE
 

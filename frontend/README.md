@@ -5,16 +5,18 @@ Vite + React + TypeScript frontend for Spring PetClinic. Replaces the former Thy
 ## Development
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-Open [http://localhost:4173](http://localhost:4173). API calls go to `/petclinic/api`, proxied to `spring-petclinic-rest` on port **9966** when that service is running. If the REST app is down, the SPA falls back to seeded in-memory data (same demo dataset as the original app).
+Open [http://localhost:4173](http://localhost:4173). By default, API calls go to
+`spring-petclinic-rest` on port **9966** using the REST base URL
+`/petclinic/api`. Start that service before using the SPA.
 
 Optional env (see `.env.example`):
 
 ```bash
-VITE_API_BASE_URL=http://localhost:9966/petclinic/api
+VITE_API_BASE=http://localhost:9966/petclinic/api
 ```
 
 ## Production build
@@ -23,11 +25,17 @@ VITE_API_BASE_URL=http://localhost:9966/petclinic/api
 npm run build
 ```
 
-Maven copies `frontend/dist` into `src/main/resources/static` when you run `./mvnw spring-boot:run` or `./mvnw package`.
+Maven and Gradle copy `frontend/dist` into the Spring Boot static resource
+classpath. The migrated application is served from
+[http://localhost:8080](http://localhost:8080) when you run:
+
+```bash
+./mvnw spring-boot:run
+```
 
 ## E2E
 
-From the repository root (with this dev server or Playwright `webServer`):
+From the repository root with `spring-petclinic-rest` running on port 9966:
 
 ```bash
 npx playwright test

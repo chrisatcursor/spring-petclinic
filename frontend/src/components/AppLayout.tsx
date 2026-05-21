@@ -18,7 +18,7 @@ const navItems: Array<{
     testId: 'nav-owners',
     title: 'find owners',
     icon: 'search',
-    text: 'Find owners',
+    text: 'Find Owners',
   },
   {
     to: '/vets.html',
