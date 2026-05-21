@@ -2,9 +2,11 @@
   "name": "spring-petclinic-e2e",
   "private": true,
   "scripts": {
+    "test": "playwright test",
     "test:e2e": "playwright test --pass-with-no-tests",
     "test:e2e:ui": "playwright test --ui --pass-with-no-tests",
-    "test:e2e:headed": "playwright test --headed --pass-with-no-tests"
+    "test:e2e:headed": "playwright test --headed --pass-with-no-tests",
+    "uat": "node scripts/uat-manual-walkthrough.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.51.0"
