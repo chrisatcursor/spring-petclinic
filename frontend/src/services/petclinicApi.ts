@@ -99,8 +99,9 @@ export interface PaginatedVets {
 const PAGE_SIZE = 5;
 
 function defaultApiBase(): string {
-  const { protocol, hostname } = window.location;
-  return `${protocol}//${hostname}:9966/petclinic/api`;
+  // Same-origin path; Vite dev server proxies `/petclinic/*` to the REST
+  // backend on port 9966.
+  return '/petclinic/api';
 }
 
 function trimTrailingSlash(value: string): string {
